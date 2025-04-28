@@ -1,5 +1,6 @@
 import subprocess
 import os
+import unicodedata
 
 
 def get_screenshot_directory() -> str:

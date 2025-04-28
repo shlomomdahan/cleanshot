@@ -19,7 +19,7 @@ class OpenAIProvider(InferenceProvider):
     def encode_image(self, image_path: str) -> str:
         """Encode an image file to base64 string."""
         # Normalize the path to handle Unicode characters
-        normalized_path = unicodedata.normalize('NFC', image_path)
+        normalized_path = unicodedata.normalize("NFC", image_path)
         with open(normalized_path, "rb") as image_file:
             return base64.b64encode(image_file.read()).decode("utf-8")
 
