@@ -1,10 +1,11 @@
 from pathlib import Path
 from dotenv import dotenv_values
+from snapi.constants import CONFIG_FILE_NAME
 
 
 class Config:
     def __init__(self):
-        self.config_path = Path.home() / ".snapi"
+        self.config_path = Path.home() / CONFIG_FILE_NAME
         self.vals = dotenv_values(self.config_path)
 
     @property

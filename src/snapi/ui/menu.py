@@ -13,7 +13,7 @@ class ScreenshotMonitorApp(rumps.App):
         super().__init__("Screenshot Monitor", icon=icon_path)
         self.manager = ScreenshotManager()
         self.monitoring = False
-        
+
         # Start monitoring in a separate thread
         threading.Thread(target=self._start_monitoring, daemon=True).start()
 
