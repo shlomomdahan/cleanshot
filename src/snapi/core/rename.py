@@ -6,7 +6,7 @@ def rename_screenshot(file_path: str) -> None:
     try:
         print(f"Renaming screenshot: {file_path}")
         path = Path(file_path).resolve()
-        
+
         if not path.exists():
             print(f"Error: File not found at path: {path}")
             return
@@ -24,7 +24,7 @@ def rename_screenshot(file_path: str) -> None:
                 return
 
             path.rename(new_path)
-            
+
             print(f"Successfully renamed to: {new_name}")
         else:
             print("No analysis results found.")
