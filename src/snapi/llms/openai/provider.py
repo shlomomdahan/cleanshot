@@ -39,21 +39,23 @@ class OpenAIProvider(InferenceProvider):
     def analyze_image(self, image_path: str, prompt: str = PROMPT) -> str:
         """Analyze an image using GPT-4 Vision."""
         try:
-            base64_image = self.encode_image(image_path)
-            response = self.client.beta.chat.completions.parse(
+            response = self.client.responses.parse(
                 model=self.model,
-                messages=[
+                input=[
                     {
                         "role": "user",
                         "content": [
-                            {"type": "text", "text": prompt},
-                            {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}},
+                            {"type": "input_text", "text": prompt},
+                            {
+                                "type": "input_image",
+                                "image_url": f"data:image/png;base64,{self.encode_image(image_path)}"
+                            },
                         ],
                     }
                 ],
-                response_format=ScreenshotAnalysis,
+                text_format=ScreenshotAnalysis,
             )
-            return response.choices[0].message.parsed
+            return response.output_parsed
         except Exception as e:
             print(f"Error analyzing image: {str(e)}")
             return None
