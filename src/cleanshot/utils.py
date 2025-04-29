@@ -1,5 +1,13 @@
 import subprocess
 import os
+from typing import List
+from cleanshot.constants import ACCEPTED_ARGS
+
+
+def validate_args(args: List[str]) -> bool:
+    if len(args) != 1:
+        return False
+    return args[0] in ACCEPTED_ARGS
 
 
 def get_screenshot_directory() -> str:
@@ -24,3 +32,11 @@ def get_screenshot_directory() -> str:
     except Exception as e:
         print(f"Error: {e}")
         return os.getcwd()
+
+
+def is_process_running(pid: int) -> bool:
+    try:
+        os.kill(pid, 0)
+        return True
+    except (ProcessLookupError, ValueError):
+        return False

@@ -1,6 +1,6 @@
 import base64
 import unicodedata
-from openai import OpenAI, AuthenticationError
+from openai import OpenAI
 
 from cleanshot.config import config
 from cleanshot.constants import OPENAI_BASE_URL, OPENAI_DEFAULT_MODEL, PROMPT
@@ -22,19 +22,6 @@ class OpenAIProvider(InferenceProvider):
         normalized_path = unicodedata.normalize("NFC", image_path)
         with open(normalized_path, "rb") as image_file:
             return base64.b64encode(image_file.read()).decode("utf-8")
-
-    def get_options(self, prompt: str, context: str) -> ScreenshotAnalysis | None:
-        try:
-            assembled_prompt = PROMPT.format(prompt=prompt, context=context)
-            response = self.client.beta.chat.completions.parse(
-                model=self.model,
-                messages=[{"role": "user", "content": assembled_prompt}],
-                response_format=ScreenshotAnalysis,
-            )
-            return response.choices[0].message.parsed
-        except AuthenticationError:
-            print("Error: There was an error with your OpenAI API key. You can change it by running `cleanshot --setup`.")
-            return
 
     def analyze_image(self, image_path: str, prompt: str = PROMPT) -> str:
         """Analyze an image using GPT-4 Vision."""
