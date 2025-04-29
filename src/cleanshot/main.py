@@ -10,7 +10,6 @@ from cleanshot.core.cleanshot import CleanShot
 from cleanshot.utils.logging import configure_logging
 from cleanshot.utils.utils import create_parser
 
-# Configure logging at the application start
 configure_logging()
 logger = logging.getLogger(__name__)
 

@@ -6,14 +6,14 @@ import sys
 import time
 from pathlib import Path
 
-from cleanshot.core.monitor import ScreenshotManager
+from cleanshot.core.monitor import ScreenshotMonitor
 
 
 class CleanShot:
     pid_file = Path.home() / ".cleanshot" / "cleanshot.pid"
 
     def __init__(self):
-        self.manager = ScreenshotManager()
+        self.manager = ScreenshotMonitor()
         self.monitoring = False
         self.logger = logging.getLogger(__name__)
         self.pid_file.parent.mkdir(exist_ok=True, parents=True)
@@ -22,7 +22,6 @@ class CleanShot:
         try:
             if self.manager.start_monitoring():
                 self.monitoring = True
-                self.logger.info(f"Monitoring screenshots in: {self.manager.screenshots_dir}")
             else:
                 self.logger.error("Failed to start monitoring")
         except Exception as e:
@@ -46,6 +45,8 @@ class CleanShot:
             with open(cls.pid_file) as f:
                 pid = int(f.read().strip())
             os.kill(pid, 0)  # Send signal 0 to check if process exists
+            logger = logging.getLogger(__name__)
+            logger.debug(f"CleanShot is running with PID {pid}")
             return True
         except (ProcessLookupError, ValueError, OSError):
             # Process doesn't exist, cleanup the pid file
@@ -80,7 +81,7 @@ class CleanShot:
             return
 
         self.logger.info("Starting CleanShot")
-        self._start_monitoring()
+        self.manager.start_monitoring()
         self._save_pid()
 
         try:
