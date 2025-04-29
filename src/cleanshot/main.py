@@ -1,92 +1,65 @@
 from pathlib import Path
-import sys
-import subprocess
+
 import dotenv
 from rich import print as printr
 
-from cleanshot.core import CleanShot
-from cleanshot.constants import CONFIG_FILE_NAME
 from cleanshot.config.setup import run_setup
-from cleanshot.utils import is_process_running, validate_args, show_help
+from cleanshot.constants import CONFIG_FILE_NAME
+from cleanshot.core import CleanShot
+from cleanshot.utils.logging import Logger
+from cleanshot.utils.utils import create_parser
+
+logger = Logger.get_logger()
 
 
 def handle_setup() -> bool:
     config_path = Path.home() / CONFIG_FILE_NAME
 
     if not config_path.exists():
+        logger.info("Starting initial setup")
         run_setup()
+        logger.info("Setup completed successfully")
         printr("[green]Setup complete.[/green]\n")
         return True
     return False
 
 
-def start_background_process() -> None:
-    pid_file = Path.home() / ".cleanshot.pid"
-
-    if pid_file.exists():
-        try:
-            with open(pid_file) as f:
-                pid = int(f.read().strip())
-            if is_process_running(pid):
-                printr("[bold yellow]CleanShot is already running.[/bold yellow]")
-                return
-            else:
-                pid_file.unlink()
-        except (ValueError, ProcessLookupError):
-            pid_file.unlink()
-
-    subprocess.Popen(
-        [sys.executable, "-m", "cleanshot.main", "--background"],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-        start_new_session=True,
-    )
-
-    printr(
-        "[bold green]CleanShot is now running in the background.[/bold green]\n"
-        "[bold yellow]For help run: cleanshot --help[/bold yellow]"
-    )
-
-
 def app() -> None:
+    parser = create_parser()
+    args = parser.parse_args()
+
     config_path = Path.home() / CONFIG_FILE_NAME
-    args = [arg.strip() for arg in sys.argv[1:]]
 
-    if args and not validate_args(args):
-        printr("[bold red]Invalid argument[/bold red]")
-        printr("[yellow]Try running [bold]--help[/bold] for more information[/yellow]")
+    if args.setup:
+        handle_setup()
         return
 
-    if not args:
-        if not config_path.exists():
-            handle_setup()
+    # Handle stop command
+    if args.command == "stop":
+        if not CleanShot.stop():
+            logger.warning("Attempted to stop CleanShot but it was not running")
+            printr("[bold red]CleanShot is not running.[/bold red]")
         else:
-            dotenv.load_dotenv(config_path, override=True)
-            start_background_process()
+            logger.info("CleanShot stopped successfully")
+            printr("[bold green]CleanShot stopped.[/bold green]")
         return
 
-    if len(args) == 1:
-        command = args[0]
+    if args.background:
+        logger.info("Starting CleanShot in background mode")
+        dotenv.load_dotenv(config_path, override=True)
+        app = CleanShot()
+        app.run()
+        return
 
-        if command == "--background":
-            dotenv.load_dotenv(config_path, override=True)
-            app = CleanShot()
-            app.run()
-
-        if command == "--help":
-            show_help()
-            return
-
-        if command == "--setup":
-            handle_setup()
-            return
-
-        if command == "stop":
-            if not CleanShot.stop():
-                printr("[bold red]CleanShot is not running.[/bold red]")
-            else:
-                printr("[bold green]CleanShot stopped.[/bold green]")
-            return
+    if not config_path.exists():
+        handle_setup()
+    else:
+        dotenv.load_dotenv(config_path, override=True)
+        CleanShot.start_background()
+        printr(
+            "[bold green]CleanShot is now running in the background.[/bold green]\n"
+            "[bold yellow]For help run: cleanshot --help[/bold yellow]"
+        )
 
 
 if __name__ == "__main__":

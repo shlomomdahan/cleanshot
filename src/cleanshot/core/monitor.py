@@ -4,7 +4,7 @@ import time
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
 
-from cleanshot.utils import get_screenshot_directory
+from cleanshot.utils.utils import get_screenshot_directory
 
 from .rename import rename_screenshot
 
