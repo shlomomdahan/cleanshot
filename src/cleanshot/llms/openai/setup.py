@@ -1,4 +1,8 @@
-from cleanshot.config.types import SetupQuestionText, SetupQuestionSelect, SetupQuestionSelectOption
+from cleanshot.config.types import (
+    SetupQuestionText,
+    SetupQuestionSelect,
+    SetupQuestionSelectOption,
+)
 
 
 questions = (
@@ -13,9 +17,6 @@ questions = (
         options=[
             SetupQuestionSelectOption(
                 value="gpt-4o-mini", label="gpt-4o-mini", description="Good performance and speed, and cheaper"
-            ),
-            SetupQuestionSelectOption(
-                value="gpt-4o", label="gpt-4o", description="More expensive and slower, but better performance"
             ),
         ],
     ),
