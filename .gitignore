@@ -1,0 +1,14 @@
+.env
+
+.ruff_cache
+
+/env
+
+src/*.egg-info
+**/__pycache__
+
+# mac os
+.DS_Store
+
+# dist
+/dist
