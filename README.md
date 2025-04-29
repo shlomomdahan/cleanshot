@@ -22,7 +22,7 @@ cleanshot
 #### Stop cleanshot
 
 ```bash
-cleanshot
+cleanshot stop
 ```
 
 #### View help docs
