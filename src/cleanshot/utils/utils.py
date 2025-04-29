@@ -1,30 +1,33 @@
 import argparse
 import os
 import subprocess
+from pathlib import Path
 
 
-def get_screenshot_directory() -> str:
+def read_screencapture_location() -> Path | None:
     try:
-        result = subprocess.run(
+        loc = subprocess.check_output(
             ["defaults", "read", "com.apple.screencapture", "location"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
             text=True,
-            check=False,
-        )
+            stderr=subprocess.DEVNULL,
+        ).strip()
+        return Path(loc).expanduser()
+    except subprocess.CalledProcessError:
+        return None
 
-        if result.returncode == 0 and result.stdout.strip():
-            print(f"Using custom location: {result.stdout.strip()}")
-            return result.stdout.strip()
 
-        default_location = os.path.expanduser("~/Desktop")
-        if os.path.exists(default_location):
-            print(f"Using default location: {default_location}")
-            return default_location
+def get_screenshot_directory() -> Path:
+    loc = read_screencapture_location()
 
-    except Exception as e:
-        print(f"Error: {e}")
-        return os.getcwd()
+    if loc is not None:
+        loc = loc.resolve()
+        if loc.exists():
+            return loc
+
+    # 2️⃣ desktop
+    desktop = Path.home() / "Desktop"
+    desktop.mkdir(exist_ok=True)
+    return desktop.resolve()
 
 
 def is_process_running(pid: int) -> bool:
