@@ -1,9 +1,18 @@
-from pathlib import Path
 import time
-from cleanshot.llms.llm import get_inference_provider
+from pathlib import (
+    Path,
+)
+
+from cleanshot.llms.llm import (
+    get_inference_provider,
+)
 
 
-def rename_screenshot(file_path: str, max_retries: int = 3, initial_delay: float = 0.5) -> None:
+def rename_screenshot(
+    file_path: str,
+    max_retries: int = 3,
+    initial_delay: float = 0.5,
+) -> None:
     path = Path(file_path).resolve()
     retry_count = 0
     current_delay = initial_delay

@@ -10,17 +10,17 @@ from cleanshot.config.setup import run_setup
 from cleanshot.utils import is_process_running, validate_args, show_help
 
 
-def handle_setup(force=False):
+def handle_setup() -> bool:
     config_path = Path.home() / CONFIG_FILE_NAME
 
-    if not config_path.exists() or force:
+    if not config_path.exists():
         run_setup()
         printr("[green]Setup complete.[/green]\n")
         return True
     return False
 
 
-def start_background_process():
+def start_background_process() -> None:
     pid_file = Path.home() / ".cleanshot.pid"
 
     if pid_file.exists():
@@ -48,7 +48,7 @@ def start_background_process():
     )
 
 
-def app():
+def app() -> None:
     config_path = Path.home() / CONFIG_FILE_NAME
     args = [arg.strip() for arg in sys.argv[1:]]
 
@@ -78,7 +78,7 @@ def app():
             return
 
         if command == "--setup":
-            handle_setup(force=True)
+            handle_setup()
             return
 
         if command == "stop":

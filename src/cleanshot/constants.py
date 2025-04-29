@@ -8,7 +8,7 @@ OPENAI_BASE_URL = "https://api.openai.com/v1"
 CONFIG_FILE_NAME = ".cleanshotrc"
 
 PROMPT = """
-You are a helpful assistant that analyzes screenshot images and generates 
+You are a helpful assistant that analyzes screenshot images and generates  
 appropriate filenames. Your task is to provide descriptive, concise names that 
 accurately reflect what is shown in each screenshot.
 

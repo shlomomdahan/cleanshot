@@ -35,6 +35,6 @@ where = ["src"]
 include = ["cleanshot*"]
 
 [tool.ruff]
-line-length = 120 
+line-length = 120
 
  

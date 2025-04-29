@@ -1,12 +1,12 @@
 from pathlib import Path
 from typing import Dict
-from cleanshot.constants import CONFIG_FILE_NAME
-import dotenv
-from cleanshot.config.types import SetupQuestionSelect, SetupQuestionSelectOption, SetupQuestionText, SetupQuestion
-from cleanshot.constants import LLMProviders
-from cleanshot.llms.openai.setup import questions as openai_questions
 
+import dotenv
 import questionary
+
+from cleanshot.config.types import SetupQuestion, SetupQuestionSelect, SetupQuestionSelectOption, SetupQuestionText
+from cleanshot.constants import CONFIG_FILE_NAME, LLMProviders
+from cleanshot.llms.openai.setup import questions as openai_questions
 
 setup_questions = [
     SetupQuestionSelect(

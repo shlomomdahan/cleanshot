@@ -1,9 +1,12 @@
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
-import time
-from cleanshot.utils import get_screenshot_directory
-from .rename import rename_screenshot
 import logging
+import time
+
+from watchdog.events import FileSystemEvent, FileSystemEventHandler
+from watchdog.observers import Observer
+
+from cleanshot.utils import get_screenshot_directory
+
+from .rename import rename_screenshot
 
 
 class ScreenshotManager(FileSystemEventHandler):
@@ -49,7 +52,7 @@ class ScreenshotManager(FileSystemEventHandler):
         except Exception as e:
             self.logger.error(f"Error stopping monitoring: {e}")
 
-    def on_created(self, event) -> None:
+    def on_created(self, event: FileSystemEvent) -> None:
         """Handle file creation events."""
         if event.is_directory:
             return

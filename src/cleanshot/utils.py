@@ -42,7 +42,7 @@ def is_process_running(pid: int) -> bool:
         return False
 
 
-def show_help():
+def show_help() -> None:
     """Display help information about available commands."""
     help_text = """
     [bold cyan]cleanshot CLI Commands:[/bold cyan]
