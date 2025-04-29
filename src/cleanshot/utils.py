@@ -40,3 +40,16 @@ def is_process_running(pid: int) -> bool:
         return True
     except (ProcessLookupError, ValueError):
         return False
+
+
+def show_help():
+    """Display help information about available commands."""
+    help_text = """
+    [bold cyan]cleanshot CLI Commands:[/bold cyan]
+    
+    [bold]cleanshot[/bold]              - Start cleanshot in background mode
+    [bold]cleanshot stop[/bold]         - Stop a running cleanshot instance
+    [bold]cleanshot --setup[/bold]      - Run or re-run the setup process
+    [bold]cleanshot --help[/bold]       - Show this help information
+    """
+    printr(help_text)
