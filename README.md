@@ -5,6 +5,8 @@
 
 This application monitors your macOS Screenshots folder and automatically renames screenshots using OpenAI.
 
+![Description](./.github/demo.gif)
+
 ## 🔧 Installation
 
 ```bash
