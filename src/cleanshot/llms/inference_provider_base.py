@@ -1,4 +1,4 @@
-from snapi.llms.types import ScreenshotAnalysis
+from cleanshot.llms.types import ScreenshotAnalysis
 
 
 class InferenceProvider:

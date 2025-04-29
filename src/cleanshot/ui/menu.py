@@ -1,5 +1,5 @@
 import rumps
-from snapi.core import ScreenshotManager
+from cleanshot.core import ScreenshotManager
 import os
 import subprocess
 import threading

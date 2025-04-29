@@ -2,16 +2,16 @@ import base64
 import unicodedata
 from openai import OpenAI, AuthenticationError
 
-from snapi.config import config
-from snapi.constants import OPENAI_BASE_URL, OPENAI_DEFAULT_MODEL, PROMPT
-from snapi.llms.inference_provider_base import InferenceProvider
-from snapi.llms.types import ScreenshotAnalysis
+from cleanshot.config import config
+from cleanshot.constants import OPENAI_BASE_URL, OPENAI_DEFAULT_MODEL, PROMPT
+from cleanshot.llms.inference_provider_base import InferenceProvider
+from cleanshot.llms.types import ScreenshotAnalysis
 
 
 class OpenAIProvider(InferenceProvider):
     def __init__(self):
         if not config.openai_api_key:
-            raise ValueError("OPENAI_API_KEY must be set. Try running `snapi --setup`.")
+            raise ValueError("OPENAI_API_KEY must be set. Try running `cleanshot --setup`.")
 
         self.client = OpenAI(base_url=OPENAI_BASE_URL, api_key=config.openai_api_key)
         self.model = config.openai_model or OPENAI_DEFAULT_MODEL
@@ -33,7 +33,7 @@ class OpenAIProvider(InferenceProvider):
             )
             return response.choices[0].message.parsed
         except AuthenticationError:
-            print("Error: There was an error with your OpenAI API key. You can change it by running `snapi --setup`.")
+            print("Error: There was an error with your OpenAI API key. You can change it by running `cleanshot --setup`.")
             return
 
     def analyze_image(self, image_path: str, prompt: str = PROMPT) -> str:

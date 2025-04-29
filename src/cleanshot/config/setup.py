@@ -1,10 +1,10 @@
 from pathlib import Path
 from typing import Dict
-from snapi.constants import CONFIG_FILE_NAME
+from cleanshot.constants import CONFIG_FILE_NAME
 import dotenv
-from snapi.config.types import SetupQuestionSelect, SetupQuestionSelectOption, SetupQuestionText, SetupQuestion
-from snapi.constants import LLMProviders
-from snapi.llms.openai.setup import questions as openai_questions
+from cleanshot.config.types import SetupQuestionSelect, SetupQuestionSelectOption, SetupQuestionText, SetupQuestion
+from cleanshot.constants import LLMProviders
+from cleanshot.llms.openai.setup import questions as openai_questions
 
 import questionary
 

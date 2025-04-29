@@ -1,4 +1,4 @@
-from snapi.config.types import SetupQuestionText, SetupQuestionSelect, SetupQuestionSelectOption
+from cleanshot.config.types import SetupQuestionText, SetupQuestionSelect, SetupQuestionSelectOption
 
 
 questions = (

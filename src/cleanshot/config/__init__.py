@@ -1,6 +1,6 @@
 from pathlib import Path
 from dotenv import dotenv_values
-from snapi.constants import CONFIG_FILE_NAME
+from cleanshot.constants import CONFIG_FILE_NAME
 
 
 class Config:

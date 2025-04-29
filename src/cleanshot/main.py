@@ -1,6 +1,6 @@
-from snapi.ui.menu import ScreenshotMonitorApp
-from snapi.constants import CONFIG_FILE_NAME
-from snapi.config.setup import run_setup
+from cleanshot.ui.menu import ScreenshotMonitorApp
+from cleanshot.constants import CONFIG_FILE_NAME
+from cleanshot.config.setup import run_setup
 from pathlib import Path
 import dotenv
 import sys

@@ -1,5 +1,5 @@
 from pathlib import Path
-from snapi.llms.llm import get_inference_provider
+from cleanshot.llms.llm import get_inference_provider
 
 
 def rename_screenshot(file_path: str) -> None:

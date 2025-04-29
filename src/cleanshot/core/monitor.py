@@ -1,7 +1,7 @@
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import time
-from snapi.utils import get_screenshot_directory
+from cleanshot.utils import get_screenshot_directory
 from .rename import rename_screenshot
 
 

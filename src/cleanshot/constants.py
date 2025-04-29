@@ -4,7 +4,7 @@ class LLMProviders:
 
 OPENAI_DEFAULT_MODEL = "gpt-4o-mini"
 OPENAI_BASE_URL = "https://api.openai.com/v1"
-CONFIG_FILE_NAME = ".snapirc"
+CONFIG_FILE_NAME = ".cleanshotrc"
 
 PROMPT = """
 You are a helpful assistant that analyzes screenshot images and generates 

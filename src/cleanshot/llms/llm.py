@@ -1,7 +1,7 @@
-from snapi.config import config
-from snapi.constants import LLMProviders
-from snapi.llms.openai.provider import OpenAIProvider
-from snapi.llms.inference_provider_base import InferenceProvider
+from cleanshot.config import config
+from cleanshot.constants import LLMProviders
+from cleanshot.llms.openai.provider import OpenAIProvider
+from cleanshot.llms.inference_provider_base import InferenceProvider
 
 
 def get_inference_provider() -> InferenceProvider:
