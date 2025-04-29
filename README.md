@@ -3,7 +3,7 @@
 [![PyPI version](https://badge.fury.io/py/cleanshot.svg)](https://badge.fury.io/py/cleanshot)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This application monitors your macOS Screenshots folder and automatically renames screenshots using OpenAI.
+Cleanshot monitors your macOS Screenshots folder and automatically renames screenshots using OpenAI.
 
 ![Description](./.github/demo.gif)
 
