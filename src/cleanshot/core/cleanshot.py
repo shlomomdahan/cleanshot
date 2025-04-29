@@ -17,10 +17,7 @@ class CleanShot:
         try:
             if self.manager.start_monitoring():
                 self.monitoring = True
-                print(
-                    f"Monitoring screenshots in: "
-                    f"{self.manager.screenshots_dir}"
-                )
+                print(f"Monitoring screenshots in: {self.manager.screenshots_dir}")
             else:
                 print("Failed to start monitoring")
         except Exception as e:
@@ -36,15 +33,15 @@ class CleanShot:
     def _remove_pid_file(self):
         if self.pid_file.exists():
             self.pid_file.unlink()
-            
+
     def _is_instance_running(self):
         if not self.pid_file.exists():
             return False
-            
+
         try:
             with open(self.pid_file) as f:
                 pid = int(f.read().strip())
-                
+
             os.kill(pid, 0)  # Send signal 0 to check if process exists
             return True
         except (ProcessLookupError, ValueError, OSError):
@@ -52,12 +49,12 @@ class CleanShot:
             return False
 
     def run(self):
-        if self._is_instance_running(): 
+        if self._is_instance_running():
             return
-            
+
         self._start_monitoring()
         self._save_pid()
-        
+
         try:
             while True:
                 time.sleep(1)

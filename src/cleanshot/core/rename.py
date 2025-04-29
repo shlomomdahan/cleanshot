@@ -3,12 +3,7 @@ import time
 from cleanshot.llms.llm import get_inference_provider
 
 
-def rename_screenshot(
-    file_path: str,
-    max_retries: int = 3,
-    initial_delay: float = 0.5
-) -> None:
-    
+def rename_screenshot(file_path: str, max_retries: int = 3, initial_delay: float = 0.5) -> None:
     path = Path(file_path).resolve()
     retry_count = 0
     current_delay = initial_delay
@@ -17,8 +12,7 @@ def rename_screenshot(
         try:
             if not path.exists():
                 print(
-                    f"File not found, retrying in {current_delay} seconds... "
-                    f"(attempt {retry_count + 1}/{max_retries})"
+                    f"File not found, retrying in {current_delay} seconds... (attempt {retry_count + 1}/{max_retries})"
                 )
                 time.sleep(current_delay)
                 current_delay *= 2  # Exponential backoff

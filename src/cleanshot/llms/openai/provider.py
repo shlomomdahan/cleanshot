@@ -35,7 +35,7 @@ class OpenAIProvider(InferenceProvider):
                             {"type": "input_text", "text": prompt},
                             {
                                 "type": "input_image",
-                                "image_url": f"data:image/png;base64,{self.encode_image(image_path)}"
+                                "image_url": f"data:image/png;base64,{self.encode_image(image_path)}",
                             },
                         ],
                     }

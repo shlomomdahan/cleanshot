@@ -1,6 +1,6 @@
 class LLMProviders:
     OPENAI = "openai"
-    
+
 
 ACCEPTED_ARGS = {"--setup", "stop", "--help", "--background"}
 OPENAI_DEFAULT_MODEL = "gpt-4o-mini"

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
+
 @dataclass
 class SetupQuestionSelectOption:
     """Represents a possible answer to a question"""

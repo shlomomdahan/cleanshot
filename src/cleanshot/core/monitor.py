@@ -54,10 +54,7 @@ class ScreenshotManager(FileSystemEventHandler):
         if event.is_directory:
             return
 
-        is_screenshot = (
-            event.src_path.endswith(".png") 
-            and ".Screenshot" in event.src_path
-        )
+        is_screenshot = event.src_path.endswith(".png") and ".Screenshot" in event.src_path
         if not is_screenshot:
             return
 
@@ -75,5 +72,5 @@ class ScreenshotManager(FileSystemEventHandler):
         return {
             "is_running": self.is_running,
             "screenshots_dir": self.screenshots_dir,
-            "observer_active": self.observer is not None
+            "observer_active": self.observer is not None,
         }
