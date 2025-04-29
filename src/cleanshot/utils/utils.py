@@ -24,7 +24,6 @@ def get_screenshot_directory() -> Path:
         if loc.exists():
             return loc
 
-    # 2️⃣ desktop
     desktop = Path.home() / "Desktop"
     desktop.mkdir(exist_ok=True)
     return desktop.resolve()
