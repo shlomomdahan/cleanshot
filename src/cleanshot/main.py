@@ -37,7 +37,10 @@ def app():
         return
 
     if len(args) == 1 and args[0] == "stop":
-        CleanShot.stop()
+        if not CleanShot.stop():
+            printr("[bold red]CleanShot is not running.[/bold red]")
+        else:
+            printr("[bold green]CleanShot stopped.[/bold green]")
         return
 
     dotenv.load_dotenv(config_path, override=True)
@@ -64,7 +67,7 @@ def app():
         )
         printr(
             "[bold green]CleanShot is now running in the background.[/bold green]\n"
-            "[cyan]To stop it, run:[/cyan] [bold]cleanshot stop[/bold]"
+            "[bold yellow]for help run: cleanshot --help[/bold yellow]"
         )
         return
 
