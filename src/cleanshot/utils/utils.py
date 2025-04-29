@@ -47,9 +47,9 @@ def create_parser() -> argparse.ArgumentParser:
         """,
     )
     parser.add_argument(
-        "--background",
+        "--daemon",
         action="store_true",
-        help=argparse.SUPPRESS,
+        help=argparse.SUPPRESS,  # Hidden from help output
     )
 
     parser.add_argument(
