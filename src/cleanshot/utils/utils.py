@@ -43,7 +43,7 @@ def create_parser() -> argparse.ArgumentParser:
             Examples:
             cleanshot              Start CleanShot in background mode
             cleanshot stop         Stop a running CleanShot instance
-            cleanshot --setup      Run or re-run the setup process
+            cleanshot --setup      Run or re-run the setup process (overwrites existing configuration)
         """,
     )
     parser.add_argument(
@@ -55,7 +55,7 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--setup",
         action="store_true",
-        help="Run or re-run the setup process",
+        help="Run or re-run the setup process (will overwrite existing configuration values)",
     )
 
     subparsers = parser.add_subparsers(dest="command", help="Command to execute")

@@ -19,11 +19,13 @@ def handle_setup() -> bool:
 
     if not config_path.exists():
         logger.info("Starting initial setup")
-        run_setup()
-        logger.info("Setup completed successfully")
-        printr("[green]Setup complete.[/green]\n")
-        return True
-    return False
+    else:
+        logger.info("Re-running setup to update configuration")
+
+    run_setup()
+    logger.info("Setup completed successfully")
+    printr("[green]Setup complete.[/green]\n")
+    return True
 
 
 def app() -> None:
