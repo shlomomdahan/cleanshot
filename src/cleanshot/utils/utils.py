@@ -48,6 +48,13 @@ def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="CleanShot - Automatically rename screenshots using OpenAI",
         formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+            Examples:
+cleanshot              Start CleanShot in background mode
+cleanshot stop         Stop a running CleanShot instance
+cleanshot --setup      Run or re-run the setup process (overwrites existing configuration)
+cleanshot clean <dir>  Rename all screenshots in the specified directory (e.g., '~/Desktop' or '.')
+        """,
     )
 
     parser.add_argument(
