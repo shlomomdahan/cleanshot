@@ -7,7 +7,7 @@ from rich import print as printr
 from cleanshot.config.setup import run_setup
 from cleanshot.constants import CONFIG_FILE_NAME
 from cleanshot.core.cleanshot import CleanShot
-from cleanshot.utils.logging import configure_logging
+from cleanshot.utils.logging import clear_logs, configure_logging
 from cleanshot.utils.utils import create_parser
 
 configure_logging()
@@ -46,10 +46,21 @@ def app() -> None:
             printr("[bold green]CleanShot stopped.[/bold green]")
         return
 
+    if args.command == "clean":
+        if not args.directory:
+            printr("[bold red]Please provide a directory to clean.[/bold red]")
+            return
+
+        CleanShot.clean(Path(args.directory))
+        return
+
     if not config_path.exists():
         handle_setup()
 
     dotenv.load_dotenv(config_path, override=True)
+
+    if not args.command == "stop":
+        clear_logs()
 
     if args.daemon:
         app = CleanShot()
