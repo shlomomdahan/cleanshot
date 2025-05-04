@@ -1,6 +1,6 @@
 [project]
 name = "cleanshot"
-version = "1.0.1"
+version = "1.1.0"
 description = "A tool to automatically rename screenshots using OpenAI's OCR"
 readme = "README.md"
 requires-python = ">=3.8"
