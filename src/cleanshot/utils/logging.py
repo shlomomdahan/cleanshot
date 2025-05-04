@@ -4,10 +4,6 @@ from pathlib import Path
 
 
 def configure_logging():
-    """
-    Configure logging for the entire application.
-    This should be called once at application startup.
-    """
     log_file = Path.home() / ".cleanshot.log"
 
     formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -32,7 +28,6 @@ def configure_logging():
 
 
 def clear_logs():
-    """Clear the log file. Should only be called when starting the application."""
     log_file = Path.home() / ".cleanshot.log"
     if log_file.exists():
         open(log_file, "w").close()
