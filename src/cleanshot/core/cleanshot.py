@@ -1,3 +1,4 @@
+import concurrent.futures
 import logging
 import os
 import signal
@@ -5,18 +6,19 @@ import subprocess
 import sys
 import time
 from pathlib import Path
+from typing import Optional
 
 from cleanshot.core.monitor import ScreenshotMonitor
+from cleanshot.utils.utils import find_screenshots
 
 
 class CleanShot:
-    pid_file = Path.home() / ".cleanshot" / "cleanshot.pid"
+    pid_file = Path.home() / ".cleanshot.pid"
 
     def __init__(self):
         self.manager = ScreenshotMonitor()
         self.monitoring = False
         self.logger = logging.getLogger(__name__)
-        self.pid_file.parent.mkdir(exist_ok=True, parents=True)
 
     def _start_monitoring(self):
         try:
@@ -57,7 +59,6 @@ class CleanShot:
     @classmethod
     def run_as_daemon(cls) -> bool:
         """Start CleanShot as a background daemon process."""
-        logger = logging.getLogger(__name__)
 
         if cls.is_running():
             return False
@@ -92,6 +93,44 @@ class CleanShot:
             self.manager.stop_monitoring()
             self._cleanup_pid_file()
             sys.exit(0)
+
+    @staticmethod
+    def _process_screenshot(screenshot: Path) -> Optional[str]:
+        """Process a single screenshot file."""
+        try:
+            from cleanshot.core.rename import ScreenshotRenamer
+
+            renamer = ScreenshotRenamer()
+            renamer.rename_screenshot(str(screenshot))
+            return f"Successfully processed {screenshot.name}"
+
+        except Exception as e:
+            return f"Error processing {screenshot.name}: {e}"
+
+    @classmethod
+    def clean(cls, directory: Path) -> None:
+        """Clean the screenshots in the given directory using multiple threads."""
+        screenshots = find_screenshots(directory)
+
+        if not screenshots:
+            print(f"No screenshots found in {directory}")
+            return
+
+        print(f"Found {len(screenshots)} screenshots to process")
+
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            future_to_screenshot = {
+                executor.submit(cls._process_screenshot, screenshot): screenshot for screenshot in screenshots
+            }
+
+            for future in concurrent.futures.as_completed(future_to_screenshot):
+                screenshot = future_to_screenshot[future]
+                try:
+                    result = future.result()
+                    if result:
+                        print(result)
+                except Exception as e:
+                    print(f"Exception processing {screenshot.name}: {e}")
 
     @classmethod
     def _cleanup_pid_file(cls) -> None:

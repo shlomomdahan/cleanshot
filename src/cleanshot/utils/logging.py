@@ -8,15 +8,10 @@ def configure_logging():
     Configure logging for the entire application.
     This should be called once at application startup.
     """
-    # Create the logs directory
-    log_dir = Path.home() / ".cleanshot"
-    log_dir.mkdir(parents=True, exist_ok=True)
-    log_file = log_dir / "cleanshot.log"
+    log_file = Path.home() / ".cleanshot.log"
 
-    # Create formatter
     formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
-    # Setup file handler
     file_handler = RotatingFileHandler(
         log_file,
         maxBytes=1024 * 1024,  # 1MB
@@ -25,10 +20,19 @@ def configure_logging():
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(formatter)
 
-    # Configure root logger for the 'cleanshot' package
     root_logger = logging.getLogger("cleanshot")
+
+    for handler in root_logger.handlers[:]:
+        root_logger.removeHandler(handler)
+
     root_logger.setLevel(logging.DEBUG)
     root_logger.addHandler(file_handler)
 
-    # Return the log file path for reference
     return log_file
+
+
+def clear_logs():
+    """Clear the log file. Should only be called when starting the application."""
+    log_file = Path.home() / ".cleanshot.log"
+    if log_file.exists():
+        open(log_file, "w").close()

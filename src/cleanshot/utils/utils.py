@@ -1,5 +1,6 @@
 import argparse
 import os
+import re
 import subprocess
 from pathlib import Path
 
@@ -29,6 +30,12 @@ def get_screenshot_directory() -> Path:
     return desktop.resolve()
 
 
+def find_screenshots(directory: Path) -> list[Path]:
+    screenshot_pattern = re.compile(r"^Screenshot.*\.png$", re.IGNORECASE)
+    all_files = directory.glob("Screenshot*.png")
+    return [f for f in all_files if screenshot_pattern.match(f.name)]
+
+
 def is_process_running(pid: int) -> bool:
     try:
         os.kill(pid, 0)
@@ -41,17 +48,6 @@ def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="CleanShot - Automatically rename screenshots using OpenAI",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-            Examples:
-            cleanshot              Start CleanShot in background mode
-            cleanshot stop         Stop a running CleanShot instance
-            cleanshot --setup      Run or re-run the setup process (overwrites existing configuration)
-        """,
-    )
-    parser.add_argument(
-        "--daemon",
-        action="store_true",
-        help=argparse.SUPPRESS,  # Hidden from help output
     )
 
     parser.add_argument(
@@ -59,8 +55,21 @@ def create_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Run or re-run the setup process (will overwrite existing configuration values)",
     )
+    parser.add_argument(
+        "--daemon",
+        action="store_true",
+        help=argparse.SUPPRESS,  # Hidden from help output
+    )
 
     subparsers = parser.add_subparsers(dest="command", help="Command to execute")
     subparsers.add_parser("stop", help="Stop a running CleanShot instance")
+
+    clean_parser = subparsers.add_parser(
+        "clean",
+        help="Rename all screenshots in the specified directory (e.g., '~/Desktop' or '.')",
+        description="Processes and renames screenshot files in the given directory using",
+        usage="cleanshot clean <dir>",
+    )
+    clean_parser.add_argument("directory", help="Provide directory to cleanup")
 
     return parser
