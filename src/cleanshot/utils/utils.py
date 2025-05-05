@@ -4,6 +4,10 @@ import re
 import subprocess
 from pathlib import Path
 
+import requests
+
+from cleanshot.constants import VERSION
+
 
 def read_screencapture_location() -> Path | None:
     try:
@@ -53,6 +57,7 @@ def create_parser() -> argparse.ArgumentParser:
 cleanshot              Start CleanShot in background mode
 cleanshot stop         Stop a running CleanShot instance
 cleanshot --setup      Run or re-run the setup process (overwrites existing configuration)
+cleanshot --version    Show the current version of CleanShot
 cleanshot clean <dir>  Rename all screenshots in the specified directory (e.g., '~/Desktop' or '.')
         """,
     )
@@ -68,6 +73,12 @@ cleanshot clean <dir>  Rename all screenshots in the specified directory (e.g., 
         help=argparse.SUPPRESS,  # Hidden from help output
     )
 
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"Cleanshot v{VERSION}",
+    )
+
     subparsers = parser.add_subparsers(dest="command", help="Command to execute")
     subparsers.add_parser("stop", help="Stop a running CleanShot instance")
 
@@ -80,3 +91,16 @@ cleanshot clean <dir>  Rename all screenshots in the specified directory (e.g., 
     clean_parser.add_argument("directory", help="Provide directory to cleanup")
 
     return parser
+
+
+def check_latest_version(package_name: str = "cleanshot") -> str | None:
+    """Check the latest version of the package on PyPI. Returns the latest version string if newer, else None."""
+    try:
+        resp = requests.get(f"https://pypi.org/pypi/{package_name}/json", timeout=2)
+        if resp.status_code == 200:
+            latest = resp.json()["info"]["version"]
+            if latest != VERSION:
+                return latest
+    except Exception:
+        pass
+    return None
