@@ -2,11 +2,10 @@ import argparse
 import os
 import re
 import subprocess
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 
 import requests
-
-from cleanshot.constants import VERSION
 
 
 def read_screencapture_location() -> Path | None:
@@ -76,7 +75,7 @@ cleanshot clean <dir>  Rename all screenshots in the specified directory (e.g., 
     parser.add_argument(
         "--version",
         action="version",
-        version=f"Cleanshot v{VERSION}",
+        version=f"Cleanshot v{get_version()}",
     )
 
     subparsers = parser.add_subparsers(dest="command", help="Command to execute")
@@ -93,13 +92,20 @@ cleanshot clean <dir>  Rename all screenshots in the specified directory (e.g., 
     return parser
 
 
+def get_version() -> str:
+    try:
+        return version("cleanshot")
+    except PackageNotFoundError:
+        return "unknown"
+
+
 def check_latest_version(package_name: str = "cleanshot") -> str | None:
     """Check the latest version of the package on PyPI. Returns the latest version string if newer, else None."""
     try:
         resp = requests.get(f"https://pypi.org/pypi/{package_name}/json", timeout=2)
         if resp.status_code == 200:
             latest = resp.json()["info"]["version"]
-            if latest != VERSION:
+            if latest != get_version():
                 return latest
     except Exception:
         pass
