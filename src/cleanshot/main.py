@@ -8,7 +8,7 @@ from cleanshot.config.setup import run_setup
 from cleanshot.constants import CONFIG_FILE_NAME
 from cleanshot.core.cleanshot import CleanShot
 from cleanshot.utils.logging import clear_logs, configure_logging
-from cleanshot.utils.utils import create_parser
+from cleanshot.utils.utils import check_latest_version, create_parser, get_version
 
 configure_logging()
 logger = logging.getLogger(__name__)
@@ -33,6 +33,15 @@ def app() -> None:
     args = parser.parse_args()
 
     config_path = Path.home() / CONFIG_FILE_NAME
+
+    # Check for updates unless running as daemon or stop
+    if not getattr(args, "daemon", False) and args.command != "stop":
+        latest = check_latest_version()
+        if latest:
+            printr(
+                f"[bold yellow]A new version of [green]cleanshot[/green] is available: [cyan]{latest}[/cyan] (You have [magenta]{get_version()}[/magenta])\nUpdate with: [bold]pip install --upgrade cleanshot[/bold][/bold yellow]\n"
+            )
+            return
 
     if args.setup:
         handle_setup()
